@@ -1,8 +1,9 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import "./App.css";
 import Welcome from "./pages/Welcome";
-import BattleArena from "./pages/BattleArena";
+const BattleArena = lazy(() => import("./pages/BattleArena"));
 
 const router = createBrowserRouter([
   { path: "/", element: <Welcome /> },
@@ -10,7 +11,11 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 };
 
 export default App;

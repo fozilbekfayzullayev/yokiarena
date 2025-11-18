@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router";
 import { data } from "../../public/db";
+import PosterCard from "../components/Cards";
+import Winner from "../components/Podium";
+import TimerLoading from "../components/TimerLoading";
+import { useCountDown } from "../hooks/useCountdown";
 
 interface Data {
   id: number;
@@ -13,129 +15,75 @@ const BattleArena = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [roundIndex, setRoundIndex] = useState<number>(1);
   const [winner, setWinner] = useState<Data | null>(data[0]);
+  const { countdown, isLoading } = useCountDown();
 
   const nextRound = () => {
     if (!selected) return;
-    const newWinner = data.find((item) => item.name === selected) ?? winner;
+    const dataMap = new Map(data.map((item) => [item.name, item]));
+    const newWinner = dataMap.get(selected) ?? winner;
     setWinner(newWinner);
     setRoundIndex(roundIndex + 1);
     setSelected(null);
   };
 
+  const challanger = data[roundIndex];
   const isFinished = roundIndex >= data.length;
 
   return (
-    <div className="App min-h-screen w-full bg-white relative">
+    <div className="flex justify-center items-center lg:items-baseline min-h-screen w-full bg-background relative">
       {/* Dark Sphere Grid Background */}
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-background"
         style={{
           backgroundImage: `
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
+        linear-gradient(to right, rgba(71,85,105,0.5) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(71,85,105,0.5) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(139,92,246,0.15) 0%, transparent 70%)
       `,
-          backgroundSize: "40px 40px",
+          backgroundSize: "40px 40px, 40px 40px, 100% 100%",
         }}
       />
+      <TimerLoading count={countdown} isVisible={isLoading} />
+      {!isLoading && (
+        <div className="w-full z-10 px-4 py-20 md:py-12 lg:py-8 text-center">
+          {!isFinished && winner && (
+            <div className="flex items-center justify-center flex-col">
+              <h1 className="text-4xl mb-8 font-pt-serif font-bold">
+                Qaysi biri ... ?
+              </h1>
+              <div className="flex justify-between items-stretch md:items-center gap-5 md:gap-8 mb-10">
+                <PosterCard
+                  name={winner.name}
+                  img={winner.img}
+                  selected={selected === winner.name}
+                  id={`${winner.id} - ${challanger.id}`}
+                  onSelect={() => setSelected(winner.name)}
+                />
+                <p className="text-2xl font-medium font-pt-serif select-none hidden md:block">
+                  yoki
+                </p>
+                <PosterCard
+                  name={challanger.name}
+                  img={challanger.img}
+                  selected={selected === challanger.name}
+                  id={`${challanger.id}`}
+                  onSelect={() => setSelected(challanger.name)}
+                />
+              </div>
 
-      <div className="custom-container">
-        {!isFinished && winner && (
-          <div className="arena">
-            <h1 className="heading">Qaysi biri ... ?</h1>
-            <div className="visual">
-              <motion.label
-                className={`poster-label ${
-                  selected === winner.name ? "selected" : ""
-                }`}
-                key={`${winner.id}-${roundIndex}`}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+              <button
+                className={`button ${selected ? "" : "opacity-60"}`}
+                onClick={nextRound}
+                disabled={!selected}
               >
-                <input
-                  type="radio"
-                  name="1"
-                  value={winner.name}
-                  checked={selected === winner.name}
-                  onChange={(e) => setSelected(e.target.value)}
-                  style={{ display: "none" }}
-                />
-                <img
-                  src={winner.img}
-                  alt={winner.name}
-                  className="poster-img"
-                  width={200}
-                />
-                <p>{winner.name}</p>
-              </motion.label>
-
-              <p className="text">yoki</p>
-
-              <motion.label
-                className={`poster-label ${
-                  selected === data[roundIndex].name ? "selected" : ""
-                }`}
-                key={data[roundIndex].id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <input
-                  type="radio"
-                  name="1"
-                  value={data[roundIndex].name}
-                  checked={selected === data[roundIndex].name}
-                  onChange={(e) => setSelected(e.target.value)}
-                  className="visually-hidden"
-                />
-                <img
-                  src={data[roundIndex].img}
-                  alt={data[roundIndex].name}
-                  className="poster-img"
-                  width={200}
-                />
-                <p>{data[roundIndex].name}</p>
-              </motion.label>
+                Keyingi
+              </button>
             </div>
+          )}
 
-            <button
-              className={`button ${selected ? "" : "opacity-60"}`}
-              onClick={nextRound}
-              disabled={!selected}
-            >
-              Keyingi
-            </button>
-          </div>
-        )}
-
-        {isFinished && winner && (
-          <div className="podium">
-            <motion.img
-              className="winner-img"
-              src={winner.img}
-              alt={winner.name}
-              width={450}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeIn" }}
-            />
-            <p className="winner-name mb-3 bg-amber-200/50 px-4 py-2 rounded-lg">
-              G'olib 🏆: {winner.name}
-            </p>
-            <Link className="replay-btn" to="/">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6s-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8s-3.58-8-8-8"
-                />
-              </svg>
-            </Link>
-          </div>
-        )}
-      </div>
+          {isFinished && winner && <Winner winner={winner} />}
+        </div>
+      )}
     </div>
   );
 };
