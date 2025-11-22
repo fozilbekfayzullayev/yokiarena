@@ -25,6 +25,10 @@ const customStyles: StylesConfig<OptionType> = {
     fontWeight: "600",
     letterSpacing: "0.75px",
   }),
+  indicatorSeparator: (base) => ({
+    ...base,
+    width: 0, // chiziq qalinligi
+  }),
   menuList: (base) => ({
     ...base,
     padding: 0,
@@ -100,6 +104,7 @@ const Welcome = () => {
         <Select<OptionType>
           options={options}
           onChange={handleChange}
+          isSearchable={false}
           styles={customStyles}
           placeholder="Tanlash"
         />
