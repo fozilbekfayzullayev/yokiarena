@@ -4,8 +4,8 @@ import { cup } from "../assets";
 
 interface WinnerProps {
   winner: {
-    name: string;
-    img: string;
+    title: string;
+    image_url: string;
   };
 }
 
@@ -13,15 +13,15 @@ const Podium = ({ winner }: WinnerProps) => {
   return (
     <LazyMotion features={domAnimation}>
       <motion.div
-        className="max-w-[500px] w-full relative mt-10 mx-auto overflow-hidden"
+        className="max-w-[500px] w-full relative mt-[-50px] md:mt-0 mx-auto overflow-hidden"
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: "easeIn", delay: 0.8 }}
       >
         <img
-          className="w-full rounded-2xl bg-amber-50 p-2"
-          src={winner.img}
-          alt={winner.name}
+          className="w-full rounded-2xl bg-amber-50 p-2 object-cover object-center aspect-9/14"
+          src={winner.image_url}
+          alt={winner.title}
           loading="lazy"
         />
         <motion.div
@@ -38,15 +38,15 @@ const Podium = ({ winner }: WinnerProps) => {
               delay: 1.5,
               repeat: Infinity,
               repeatType: "reverse",
-              duration: 0.5,
+              duration: 0.8,
               ease: "linear",
             }}
             src={cup}
             alt="winner"
             loading="lazy"
           />
-          <p className="text-3xl md:text-5xl font-bold text-center capitalize mb-4">
-            G'olib <br /> {winner.name}
+          <p className="text-3xl md:text-5xl font-bold text-center capitalize mb-4 text-amber-200">
+            Chempion: <br /> {winner.title}
           </p>
           <div className="flex gap-5 items-center absolute bottom-10">
             <Link className="podium-btn" to="/">

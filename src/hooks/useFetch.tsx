@@ -4,17 +4,23 @@ import { supabase } from "../supabaseClient";
 interface Data {
   id: number;
   title: string;
-  img: string;
+  image_url: string;
 }
 
-export const useFetch = () => {
+export const useFetch = (category: string | null) => {
   const [data, setData] = useState<Data[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!category) {
+        console.warn("⚠ category is empty or null");
+        setLoading(false);
+        return;
+      }
+
       const { data: dbData, error } = await supabase
-        .from("Movies")
+        .from(category)
         .select("*")
         .order("id", { ascending: true });
 

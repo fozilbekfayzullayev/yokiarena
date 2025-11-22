@@ -10,7 +10,7 @@ const TimerLoading = ({ count, isVisible }: LoaderProps) => {
   return (
     <div className="absolute top-[50%] left-[50%] translate-[-50%] z-50">
       <motion.h1
-        className="text-8xl text-amber-50 font-railway"
+        className="text-8xl text-amber-50 font-pt-serif"
         key={count}
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}

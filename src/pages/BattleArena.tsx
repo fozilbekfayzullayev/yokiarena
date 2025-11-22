@@ -1,32 +1,45 @@
-import { useState } from "react";
-import { data } from "../../public/db";
+import { useEffect, useState } from "react";
+// import { data } from "../../public/db";
 import PosterCard from "../components/Cards";
-import Winner from "../components/Podium";
+import Podium from "../components/Podium";
 import TimerLoading from "../components/TimerLoading";
 import { useCountDown } from "../hooks/useCountdown";
+import { useFetch } from "../hooks/useFetch";
 
 interface Data {
   id: number;
-  name: string;
-  img: string;
+  // name: string;
+  title: string;
+  image_url: string;
 }
 
 const BattleArena = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [roundIndex, setRoundIndex] = useState<number>(1);
-  const [winner, setWinner] = useState<Data | null>(data[0]);
+  const getItem: string | null =
+    localStorage.getItem("category")?.replace(/["'\\]/g, "") ?? null;
+  const { data, loading } = useFetch(getItem);
+  const [winner, setWinner] = useState<Data | null>(data[0] ?? null);
   const { countdown, isLoading } = useCountDown();
+
+  useEffect(() => {
+    if (!loading && data?.length > 0 && winner === null) {
+      //  eslint-disable-next-line react-hooks/exhaustive-deps
+      setWinner(data[0]);
+    }
+  }, [loading, data, winner]);
 
   const nextRound = () => {
     if (!selected) return;
-    const dataMap = new Map(data.map((item) => [item.name, item]));
-    const newWinner = dataMap.get(selected) ?? winner;
+
+    const newWinner = data.find((item) => item.title === selected) ?? winner;
     setWinner(newWinner);
-    setRoundIndex(roundIndex + 1);
+
+    setRoundIndex((prev) => prev + 1);
     setSelected(null);
   };
 
-  const challanger = data[roundIndex];
+  const challanger = data[roundIndex] ?? null;
   const isFinished = roundIndex >= data.length;
 
   return (
@@ -43,6 +56,7 @@ const BattleArena = () => {
           backgroundSize: "40px 40px, 40px 40px, 100% 100%",
         }}
       />
+
       <TimerLoading count={countdown} isVisible={isLoading} />
       {!isLoading && (
         <div className="w-full z-10 px-4 py-20 md:py-12 lg:py-8 text-center">
@@ -53,22 +67,24 @@ const BattleArena = () => {
               </h1>
               <div className="flex justify-between items-stretch md:items-center gap-5 md:gap-8 mb-10">
                 <PosterCard
-                  name={winner.name}
-                  img={winner.img}
-                  selected={selected === winner.name}
+                  name={winner.title}
+                  img={winner.image_url}
+                  selected={selected === winner.title}
                   id={`${winner.id} - ${challanger.id}`}
-                  onSelect={() => setSelected(winner.name)}
+                  onSelect={() => setSelected(winner.title)}
                 />
                 <p className="text-2xl font-medium font-pt-serif select-none hidden md:block">
                   yoki
                 </p>
-                <PosterCard
-                  name={challanger.name}
-                  img={challanger.img}
-                  selected={selected === challanger.name}
-                  id={`${challanger.id}`}
-                  onSelect={() => setSelected(challanger.name)}
-                />
+                {challanger && (
+                  <PosterCard
+                    name={challanger.title}
+                    img={challanger.image_url}
+                    selected={selected === challanger.title}
+                    id={`${challanger.id}`}
+                    onSelect={() => setSelected(challanger.title)}
+                  />
+                )}
               </div>
 
               <button
@@ -81,7 +97,7 @@ const BattleArena = () => {
             </div>
           )}
 
-          {isFinished && winner && <Winner winner={winner} />}
+          {isFinished && winner && <Podium winner={winner} />}
         </div>
       )}
     </div>
