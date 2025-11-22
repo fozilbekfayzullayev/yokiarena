@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Select from "react-select";
 import type { StylesConfig } from "react-select";
-
-const words = ["kino", "aktor", "aktrisa", "qo'shiq"];
+import { useSlideWord } from "../hooks/useSlideWord.tsx";
 
 const options = [
   { value: "movies", label: "Kinolar" },
@@ -52,7 +51,7 @@ const customStyles: StylesConfig<OptionType> = {
 };
 
 const Welcome = () => {
-  const [currentWord, setCurrentWord] = useState(words[0]);
+  const { currentWord } = useSlideWord();
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
@@ -64,17 +63,6 @@ const Welcome = () => {
   useEffect(() => {
     localStorage.setItem("category", category);
   }, [category]);
-
-  useEffect(() => {
-    let index = 0;
-
-    const interval = setInterval(() => {
-      index = (index + 1) % words.length;
-      setCurrentWord(words[index]);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const handleClick = () => {
     if (category !== "") navigate("/battle");
