@@ -29,6 +29,19 @@ const BattleArena = () => {
     }
   }, [loading, data, winner]);
 
+  // Countdown ketayotgan vaqtda (va undan keyin ham) barcha rasmlarni
+  // fonda oldindan yuklab, brauzer keshiga tushirib qo'yamiz.
+  // Shunda foydalanuvchi "Keyingi" bosganda rasm allaqachon tayyor bo'ladi.
+  useEffect(() => {
+    if (!data || data.length === 0) return;
+
+    data.forEach((item) => {
+      if (!item.image_url) return;
+      const img = new Image();
+      img.src = item.image_url;
+    });
+  }, [data]);
+
   const nextRound = () => {
     if (!selected) return;
 

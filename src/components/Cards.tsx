@@ -43,7 +43,6 @@ const PosterCard = ({ name, img, selected, id, onSelect }: PosterCardProps) => {
               className="poster-img mb-2.5"
               width={400}
               height={600}
-              loading="lazy"
             />
             <p
               className={`max-w-[400px] text-lg md:text-2xl font-semibold text-dark capitalize
