@@ -5,17 +5,17 @@ Kino, aktyor, aktrisa va qo'shiqlar kategoriyasidan birini tanlang va ularni o'z
 ## Skrinshotlar
 
 ### Kirish sahifasi
-<img width="2561" height="1308" alt="FireShot Capture 059 - (Yoki) arenasi  Media arena ⚔️ -  yokiarena vercel app" src="https://github.com/user-attachments/assets/46615c8e-cafc-48cc-aff5-5dbf45b411c0" />
+<img width="2561" height="1308" alt="FireShot Capture 059 - (Yoki) arenasi  Media arena ⚔️ -  yokiarena vercel app" src="https://github.com/user-attachments/assets/e2e7d99b-f747-4f8e-b203-6178d2a0bb13" />
 
 <!-- [SCREENSHOT: bosh sahifa — kategoriya tanlash] -->
 
 ### Bellashuv
-<img width="2561" height="1308" alt="FireShot Capture 060 - (Yoki) arenasi  Media arena ⚔️ -  yokiarena vercel app" src="https://github.com/user-attachments/assets/30c488fc-be73-4d70-aa51-6bf2a2f9fc86" />
+<img width="2561" height="1308" alt="FireShot Capture 060 - (Yoki) arenasi  Media arena ⚔️ -  yokiarena vercel app" src="https://github.com/user-attachments/assets/271de42b-f4db-49dc-a72c-df10e84db413" />
 
 <!-- [SCREENSHOT: ikki poster o'rtasida tanlov] -->
 
 ### G'olib
-<img width="2561" height="1308" alt="FireShot Capture 061 - (Yoki) arenasi  Media arena ⚔️ -  yokiarena vercel app" src="https://github.com/user-attachments/assets/957b97d0-f582-4f98-92b5-01d0cd7d968c" />
+<img width="2561" height="1308" alt="FireShot Capture 061 - (Yoki) arenasi  Media arena ⚔️ -  yokiarena vercel app" src="https://github.com/user-attachments/assets/4a3a458b-6da8-4641-bb70-6db4ca56df2e" />
 
 <!-- [SCREENSHOT: turnir oxiridagi g'olib (podium)] -->
 
